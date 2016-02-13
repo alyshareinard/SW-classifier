@@ -1,6 +1,6 @@
 import numpy as np
 import pickle
-#from datetime import datetime
+from datetime import datetime
 
 def main():
 
@@ -59,7 +59,7 @@ def main():
     'pos_gse_y', 'pos_gse_z', 'pos_gsm_x', 'pos_gsm_y', 'pos_gsm_z', 'pos_hs_x', \
     'pos_hs_y', 'pos_hs_z', 'MAG_pts']
     
-    combined_names=['year', 'day', 'hr', 'min', 'sec', 'fp_year', 'fp_doy', \
+    combined_names=['date', 'day', 'hr', 'min', 'sec', 'fp_year', 'fp_doy', \
     'ACEepoch', 'proton_density', 'proton_temp', 'He4toprotons', 'proton_speed', \
     'x_dot_RTN', 'y_dot_RTN', 'z_dot_RTN', 'x_dot_GSE', 'y_dot_GSE', 'z_dot_GSE', \
     'x_dot_GSM', 'y_dot_GSM', 'z_dot_GSM', 'SWEPAM_wt', 'nHe2', 'vHe2', 'vC5', \
@@ -95,7 +95,7 @@ def main():
     skip_header=63, names=magswepam_names)
 
     combined1hr=np.genfromtxt(data_file+'ACE_combined1hr_1998.txt', \
-    skip_header=192, names=combined_names, missing_values=9.9999e+03)
+    skip_header=116, names=combined_names)#, missing_values=9.9999e+03)
 
 #
 #    for each_year in range(1998,2012):
@@ -125,6 +125,17 @@ def main():
         skip_header=192, names=combined_names)
         combined1hr=np.concatenate((combined1hr, x), axis=0) 
         
+    combined_date=[str(int(year))+str(int(doy))+str(int(hr))+str(int(minute)) for (year, doy, hr, minute) in \
+    zip(combined1hr["date"], combined1hr["day"], combined1hr["hr"], \
+    combined1hr["min"])]
+
+#    print(combined_date)
+
+#    combined1hr["date"]=
+    combined_datetime=[datetime.strptime(combined_date[i], "%Y%j%H%M") \
+        for i in range(len(combined_date))] :
+    #TODO: insert datetime into combined1hr
+ 
 #    filehandler=open('swics2hr.p', 'wb')
 #    pickle.dump(swics2hr, filehandler)
 #
