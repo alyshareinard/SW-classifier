@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 from datetime import datetime
-
+from numpy.lib import recfunctions as rfn
 def main():
 
     swics2hr_names=['year', 'day', 'hr', 'min', 'sec', 'fp_year', \
@@ -131,9 +131,12 @@ def main():
 
 #    print(combined_date)
 
-#    combined1hr["date"]=
+ 
     combined_datetime=[datetime.strptime(combined_date[i], "%Y%j%H%M") \
-        for i in range(len(combined_date))] :
+       for i in range(len(combined_date))]
+    combined1hr_wdate=rfn.append_fields(combined1hr, names="datetime", data=combined_datetime, usemask=False)
+    
+           
     #TODO: insert datetime into combined1hr
  
 #    filehandler=open('swics2hr.p', 'wb')
@@ -148,7 +151,7 @@ def main():
 #    filehandler=open('magswepam1min.p', 'wb')
 #    pickle.dump(magswepam1min, filehandler)
     
-    filehandler=open('combined1hr.p', 'wb')
-    pickle.dump(combined1hr, filehandler)
+    filehandler=open('combined1hr_wdate.p', 'wb')
+    pickle.dump(combined1hr_wdate, filehandler)
         
 main()
