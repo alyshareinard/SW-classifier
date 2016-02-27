@@ -119,20 +119,20 @@ def main():
 #        skip_header=63, names=magswepam_names)
 #        magswepam1min=np.concatenate((magswepam1min, x), axis=0)   
 
-    for each_year in range(1998, 2012): #2012 and 2013 are not formatted correctly
+    for each_year in range(1998, 2002): #2012 and 2013 are not formatted correctly
         print("reading combined, year: ", each_year)
         x=np.genfromtxt(data_file+'ACE_combined1hr_'+str(each_year)+'.txt', \
         skip_header=192, names=combined_names)
         combined1hr=np.concatenate((combined1hr, x), axis=0) 
         
-    combined_date=[str(int(year))+str(int(doy))+str(int(hr))+str(int(minute)) for (year, doy, hr, minute) in \
+    combined_date=[str(int(year))+"-"+str(int(doy))+"-"+str(int(hr))+"-"+str(int(minute)) for (year, doy, hr, minute) in \
     zip(combined1hr["date"], combined1hr["day"], combined1hr["hr"], \
     combined1hr["min"])]
 
 #    print(combined_date)
 
  
-    combined_datetime=[datetime.strptime(combined_date[i], "%Y%j%H%M") \
+    combined_datetime=[datetime.strptime(combined_date[i], "%Y-%j-%H-%M") \
        for i in range(len(combined_date))]
     combined1hr_wdate=rfn.append_fields(combined1hr, names="datetime", data=combined_datetime, usemask=False)
     

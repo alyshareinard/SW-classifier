@@ -59,11 +59,30 @@ def main():
 #    CRicmes['ICMEstart']=ICMEstart_time
 #    CRicmes['ICMEend']=ICMEend_time
 #    CRicmes['LASCO_CME']=LASCO_CME_time#, dtype=datetime6
-    print(len(CRicmes))      
-    np.reshape(CRicmes["Compstart"], len(CRicmes))
-    print(CRicmes["Compstart"].shape)
-    print(len(LASCO_CME_time))
-    CRicmes_wdatetime=np.vstack((CRicmes["Compstart"], CRicmes["Compend"], Disturbance_time, ICMEstart_time, ICMEend_time, LASCO_CME_time))
+#    print(len(CRicmes))      
+#    np.reshape(CRicmes["Compstart"], len(CRicmes))
+#    print(CRicmes["Compstart"].shape)
+#    print(len(LASCO_CME_time))
+    
+    
+#    CRicmes_wdatetime=rfn.stack_arrays((CRicmes, Disturbance_time, \
+#    ICMEstart_time, ICMEend_time, LASCO_CME_time), usemask=False, asrecarray=True)
+
+    CRicmes_wdatetime=rfn.append_fields(CRicmes, names=["Disturbance_datetime"], \
+    data=[Disturbance_time], usemask=False)
+
+    CRicmes_wdatetime=rfn.append_fields(CRicmes_wdatetime, names=["ICMEstart_datetime"], \
+    data=[ICMEstart_time], usemask=False)
+    
+    CRicmes_wdatetime=rfn.append_fields(CRicmes_wdatetime, names=["ICMEend_datetime"], \
+    data=[ICMEend_time], usemask=False)
+    
+    CRicmes_wdatetime=rfn.append_fields(CRicmes_wdatetime, names=["LASCO_CME_datetime"], \
+    data=[LASCO_CME_time], usemask=False)
+
+
+#    CRicmes_wdatetime=np.vstack((CRicmes["Compstart"], CRicmes["Compend"], \
+#    Disturbance_time, ICMEstart_time, ICMEend_time, LASCO_CME_time))
     #CRicmes_wdatetime=[CRicmes.tolist(), Disturbance_time, ICMEstart_time, ICMEend_time, LASCO_CME_time]
 #    rfn.merge_arrays(CRicmes_wdatetime, flatten=True, usemask=False)
 #    rfn.append_fields(CRicmes, names=["Disturbance_date", 
@@ -75,6 +94,7 @@ def main():
 #    print(CRicmes)
     print(CRicmes_wdatetime.shape)
     print(type(CRicmes_wdatetime))
+    print(CRicmes_wdatetime["LASCO_CME_datetime"])
         #TODO figure out how to concatenate arrays http://stackoverflow.com/questions/18574132/python-numpy-concatenation-of-named-arrays
     
     
