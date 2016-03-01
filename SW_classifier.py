@@ -71,12 +71,32 @@ for index, item in enumerate(y_train):
 #xs_slow=X_train[:,0][y_train==0]
 #ys_slow=X_train[:,1][y_train==0]
 
-plt.scatter(xs_cme, ys_cme, c="red")
 plt.scatter(xs_slow, ys_slow, c="blue")
-plt.ylim((0, 1))
+plt.scatter(xs_cme, ys_cme, c="red")
+
+plt.xlim((0, 0.6))
 plt.xlabel('speed')
 plt.ylabel('temp') 
 
+#linear classifier
+from sklearn.linear_model import SGDClassifier
+clf=SGDClassifier()
+clf.fit(X_train, y_train)
+print(clf.coef_)
+print(clf.intercept_)
+x_min, x_max = X_train[:,0].min() - .5, X_train[:,0].max() + 0.5
+xs=np.arange(x_min, x_max, 0.5)
+ys=clf.intercept_ + xs*clf.coef_[0][0]
+plt.plot(xs, ys, hold=True)
 
+#evaluating results
+from sklearn import metrics
+y_train_pred = clf.predict(X_train)
+print("accuracy score - training data: ", metrics.accuracy_score(y_train, y_train_pred))
 
+y_test_pred = clf.predict(X_test)
+print("accuracy score - test data: ", metrics.accuracy_score(y_test, y_test_pred))
 
+print("classification report", metrics.classification_report(y_test, y_test_pred))
+
+print("confusion matrix", metrics.confusion_matrix(y_test, y_test_pred))
